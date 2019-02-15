@@ -1,0 +1,13 @@
+.gradle/
+build/
+*.class
+bin/
+gen/
+out/
+target/
+local.properties
+.classpath
+.project
+*.iml
+.idea/
+*.DS_STORE

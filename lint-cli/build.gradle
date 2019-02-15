@@ -1,0 +1,8 @@
+apply plugin: "application"
+apply plugin: "com.github.johnrengelman.shadow"
+
+mainClassName = "com.android.tools.lint.Main"
+
+dependencies {
+    implementation lintLibs.lint
+}
