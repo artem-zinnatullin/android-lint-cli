@@ -3,6 +3,12 @@ apply plugin: "com.github.johnrengelman.shadow"
 
 mainClassName = "com.android.tools.lint.Main"
 
+// Generate reproducible jar.
+shadowJar {
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
 dependencies {
     implementation lintLibs.lint
 }
