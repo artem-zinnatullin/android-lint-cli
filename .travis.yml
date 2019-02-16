@@ -8,20 +8,38 @@ install:
   - true
 
 script:
-  - ./gradlew shadowJar --info --console plain
+  - mkdir -p lint-cli/build
+  - ./gradlew :lint-cli:dependencies --console plain --quiet > lint-cli/build/dependencies.txt
+  - shasum --algorithm 256 lint-cli/build/dependencies.txt > lint-cli/build/dependencies.txt.sha256
+  - shasum --algorithm 512 lint-cli/build/dependencies.txt > lint-cli/build/dependencies.txt.sha512
+  - echo "Dependencies of lint-cli.jar:" && cat lint-cli/build/dependencies.txt
+  - echo "Building lint-cli.jar..." && ./gradlew shadowJar --info --console plain
+  - shasum --algorithm 256 lint-cli/build/libs/lint-cli.jar > lint-cli/build/libs/lint-cli.jar.sha256
+  - shasum --algorithm 512 lint-cli/build/libs/lint-cli.jar > lint-cli/build/libs/lint-cli.jar.sha512
+  - echo "sha256 of dependencies.txt" && cat lint-cli/build/dependencies.txt.sha256
+  - echo "sha512 of dependencies.txt" && cat lint-cli/build/dependencies.txt.sha512
+  - echo "sha256 of lint-cli.jar" && cat lint-cli/build/libs/lint-cli.jar.sha256
+  - echo "sha512 of lint-cli.jar" && cat lint-cli/build/libs/lint-cli.jar.sha512
+
 
 deploy:
   skip_cleanup: true
   provider: releases
   api_key:
     secure: MBNj0EhGhEiODQqEhN6urLs3XOZ1h6AJUMT5eUtPvPtpvMF/kePxDzJkCjacxcEwK5Ilb8Ag8Ph5uXWnxgt34j7Z9FKyhLzy10vrOv1bQDbV6qVXHJtpkFsAIiUhcI+TXNizUeMV1kmUBKY5H6eXzDqzJdfkOrXcALgU3hcIUU7r2a539yWm+YYlPzr5hc9hQlyCMWQzmrQxGN8ll8afnah/MIhcYD21Cv+oxzOQQcDP1QLKOS9B6byOg/+0I01Z5SEcUyU6Jc065ExFKZRoIA2G9J/lvQ+yHT70AgCK9OpiEuFHQTxYiS9NjaM3IU2IDswQWq4nhkm7H82HreeTQwIt0qvzsuXtLq8qIRvIqvq/hpuLk5h0bsMhvonm7fQqtTsC7b24y603qEJp5Pi0hlKYctI/yCAVKc47cm4llvEBmUOpOdNsuN0toqlTTRqZfu+9OMQXo/aCz106miM4I2dMKUwOFaTUCpQUX85VJpaMhmEttwdd06bWZFdjlWnQ0+kC76A71WDWPdctZTE7ckc/6PCoo7dP+e9802eRYRnlXeqw8QkVHkk6jXsNF9y04CTnDB8EyuVHhx+8pSXqPe1xsF4OTk0BlfENuStNp2WpP0/EoiWg21tFFvCY0WyYTrQu7xFukXVAQcLtNpbwXGMWc9cry0fYA9o8SMJoeDY=
-  file: lint-cli/build/libs/lint-cli.jar
+  file:
+    - lint-cli/build/dependencies.txt
+    - lint-cli/build/dependencies.txt.sha256
+    - lint-cli/build/dependencies.txt.sha512
+    - lint-cli/build/libs/lint-cli.jar
+    - lint-cli/build/libs/lint-cli.jar.sha256
+    - lint-cli/build/libs/lint-cli.jar.sha512
   on:
     repo: artem-zinnatullin/android-lint-cli
     tags: true
 
 before_cache:
-  - rm -f  "$HOME"/.gradle/caches/modules-2/modules-2.lock
+  - rm -f "$HOME"/.gradle/caches/modules-2/modules-2.lock
 
 cache:
   directories:
