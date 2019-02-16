@@ -10,18 +10,12 @@ install:
 script:
   - mkdir -p lint-cli/build
   - ./gradlew :lint-cli:dependencies --console plain --quiet > lint-cli/build/dependencies.txt
-  - echo "Dependencies of lint-cli.jar:"
-  - cat lint-cli/build/dependencies.txt
-  - echo "Building lint-cli.jar..."
-  - ./gradlew shadowJar --info --console plain
-  - echo "sha256 of lint-cli.jar"
-  - shasum --algorithm 256 lint-cli/build/libs/lint-cli.jar
-  - echo "sha512 of lint-cli.jar"
-  - shasum --algorithm 512 lint-cli/build/libs/lint-cli.jar
-  - echo "sha256 of dependencies.txt"
-  - shasum --algorithm 256 lint-cli/build/dependencies.txt
-  - echo "sha512 of dependencies.txt"
-  - shasum --algorithm 512 lint-cli/build/dependencies.txt
+  - echo "Dependencies of lint-cli.jar:" && cat lint-cli/build/dependencies.txt
+  - echo "Building lint-cli.jar..." && ./gradlew shadowJar --info --console plain
+  - echo "sha256 of lint-cli.jar" && shasum --algorithm 256 lint-cli/build/libs/lint-cli.jar
+  - echo "sha512 of lint-cli.jar" && shasum --algorithm 512 lint-cli/build/libs/lint-cli.jar
+  - echo "sha256 of dependencies.txt" && shasum --algorithm 256 lint-cli/build/dependencies.txt
+  - echo "sha512 of dependencies.txt" && shasum --algorithm 512 lint-cli/build/dependencies.txt
 
 deploy:
   skip_cleanup: true
