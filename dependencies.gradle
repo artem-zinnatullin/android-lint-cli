@@ -1,5 +1,5 @@
 ext.versions = [
-        lint: "26.3.2",
+        lint: "26.4.0",
 ]
 
 ext.lintLibs = [
